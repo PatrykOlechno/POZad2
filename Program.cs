@@ -12,13 +12,13 @@ namespace NajwyzszaSkutecznoscString
             float skutecznosc, max = 0;
 
             //wczytanie nazwy pliku
-            //fileName = Console.ReadLine();
-            fileName = "lista.txt";
+            fileName = Console.ReadLine();
 
 
             try
             {
                 using (StreamReader sr = new StreamReader(fileName))
+                using (StreamWriter sw = new StreamWriter(fileName + ".max"))
                 {
                     string line;
                     while ((line = sr.ReadLine()) != null)
@@ -41,10 +41,14 @@ namespace NajwyzszaSkutecznoscString
 
                         if (imie.Length > 3 && nazwisko.EndsWith("ski") && skutecznosc == max)
                         {
-                            using (StreamWriter sw = new StreamWriter(fileName + ".max", true))
+                            char[] censored = nazwisko.ToCharArray();
+
+                            for (int i = 1; i < nazwisko.Length - 3; i++)
                             {
-                                sw.WriteLine("{0} {1} {2}", imie, nazwisko, wiek);
+                                censored[i] = '*';
                             }
+                            nazwisko = new string(censored);
+                            sw.WriteLine("{0} {1} {2}", imie, nazwisko, wiek);
                         }
                     }
                 }
@@ -53,30 +57,6 @@ namespace NajwyzszaSkutecznoscString
                 Console.WriteLine("Program has ecountered problem with reading file.");
                 Console.WriteLine(e.Message);
             }
-
-
-            //wez najlepsza skutecznosc
-           /* foreach (var line in lines)
-            {
-                string[] osoba = line.Split(" ");
-                skutecznosc = Convert.ToSingle(osoba[3]);
-                if (skutecznosc > max) max = skutecznosc;
-            }
-            Console.WriteLine(max);
-
-            foreach (var line in lines)
-            {
-                string[] osoba = line.Split(" ");
-                imie = osoba[0];
-                nazwisko = osoba[1];
-                wiek = Convert.ToInt32(osoba[2]);
-                skutecznosc = Convert.ToSingle(osoba[3]);
-
-                if (imie.Length > 3 && nazwisko.EndsWith("ski") && skutecznosc == max)
-                {
-                    Console.WriteLine("{0} pasuje", nazwisko);
-                }
-            } */
         }
     }
 }
